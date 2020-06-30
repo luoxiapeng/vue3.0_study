@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>{{count}}</div>
+    <button @click="addCount">addCount</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import Setup from "./components/setup";
+import { ref, onMounted, computed } from "@vue/composition-api";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    // Setup
+  },
+  beforeCreate() {
+    console.log("我是beforeCreate");
+  },
+  setup() {
+    console.log("我是setup钩子");
+    const count = ref(0);
+    const addCount = () => {
+      count.value += 1;
+    };
+    const plusOne = computed(() => count.value + 5);
+    onMounted(() => {
+      count.value += plusOne.value;
+      console.log("onMounted", plusOne.value);
+    });
+    return {
+      count,
+      addCount
+    };
+  },
+  created() {
+    console.log("我是create钩子");
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
